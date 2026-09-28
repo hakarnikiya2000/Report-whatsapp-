@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WHATSAPP REPORT TOOL TM: GOD OF SERVER</title>
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', Courier, 'VT323', 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            position: relative;
+            color: #0f0;
+            padding: 16px;
+        }
+
+        /* ----- ANIMATED GRID & PARTICLES (CSS only) ----- */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .grid {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridScroll 12s linear infinite;
+            transform: rotate(0deg);
+        }
+
+        @keyframes gridScroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        .particle {
+            position: absolute;
+            background: #0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #0ff, 0 0 24px #0ff;
+            opacity: 0.6;
+            animation: floatParticle 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) scale(1); opacity: 0.3; }
+            100% { transform: translateY(-30px) scale(1.5); opacity: 0.9; }
+        }
+
+        /* ----- MAIN GLASS CARD ----- */
+        .cyber-terminal {
+            position: relative;
+            z-index: 10;
+            background: rgba(0, 20, 10, 0.55);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(0, 255, 200, 0.35);
+            border-radius: 28px;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 100, 0.3),
+                0 0 80px rgba(0, 255, 200, 0.15),
+                inset 0 0 40px rgba(0, 255, 200, 0.05);
+            padding: 24px 20px;
+            width: 100%;
+            max-width: 780px;
+            transition: box-shadow 0.3s;
+        }
+
+        .cyber-terminal:hover {
+            box-shadow: 
+                0 0 50px rgba(0, 255, 100, 0.5),
+                0 0 100px rgba(0, 255, 200, 0.25),
+                inset 0 0 60px rgba(0, 255, 200, 0.1);
+        }
+
+        /* ----- HEADER / TITLE ----- */
+        .glitch-title {
+            font-size: clamp(1rem, 5vw, 1.6rem);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #0f0;
+            text-shadow: 
+                0 0 8px #0f0,
+                0 0 20px #0f0,
+                0 0 40px #0ff,
+                0 0 80px #0ff;
+            margin-bottom: 6px;
+            word-break: break-word;
+            animation: flicker 3s infinite alternate;
+        }
+
+        .glitch-title span {
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 30px #0ff, 0 0 60px #0f0;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            95% { opacity: 1; }
+            97% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: #0ff;
+            text-shadow: 0 0 8px #0ff;
+            margin-bottom: 24px;
+            border-bottom: 1px dashed rgba(0, 255, 200, 0.3);
+            padding-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* ----- FORM ELEMENTS ----- */
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #0ff;
+            text-shadow: 0 0 6px #0ff;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 30, 20, 0.7);
+            border: 1px solid #0fa;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 255, 200, 0.3), inset 0 0 12px rgba(0, 255, 200, 0.05);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #0ff;
+            box-shadow: 0 0 24px #0ff, 0 0 48px rgba(0, 255, 200, 0.4), inset 0 0 20px rgba(0, 255, 200, 0.1);
+        }
+
+        .prefix {
+            padding: 12px 8px 12px 16px;
+            color: #0fa;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-shadow: 0 0 8px #0fa;
+            user-select: none;
+        }
+
+        .cyber-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #0f0;
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 12px 16px 12px 4px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 6px #0f0;
+        }
+
+        .cyber-input::placeholder {
+            color: rgba(0, 255, 200, 0.4);
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* number input style */
+        .cyber-input[type="number"]::-webkit-inner-spin-button {
+            opacity: 0.5;
+            background: #0fa;
+        }
+
+        /* select */
+        .cyber-select {
+            width: 100%;
+            background: rgba(0, 30, 20, 0.8);
+            border: 1px solid #0fa;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #0f0;
+            font-family: inherit;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            outline: none;
+            box-shadow: 0 0 12px rgba(0, 255, 200, 0.3), inset 0 0 12px rgba(0, 255, 200, 0.05);
+            transition: box-shadow 0.2s, border-color 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            cursor: pointer;
+        }
+
+        .cyber-select:focus {
+            border-color: #0ff;
+            box-shadow: 0 0 24px #0ff, 0 0 48px rgba(0, 255, 200, 0.4);
+        }
+
+        .cyber-select option {
+            background: #001a10;
+            color: #0f0;
+            font-family: inherit;
+            padding: 8px;
+        }
+
+        /* ----- BUTTONS ----- */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 28px;
+            justify-content: center;
+        }
+
+        .btn {
+            flex: 1 1 180px;
+            background: rgba(0, 40, 20, 0.7);
+            border: 1.5px solid #0fa;
+            border-radius: 40px;
+            padding: 14px 18px;
+            color: #0f0;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.2), inset 0 0 20px rgba(0, 255, 200, 0.05);
+            transition: all 0.2s ease;
+            text-shadow: 0 0 6px #0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 200, 0.15);
+            border-color: #0ff;
+            box-shadow: 0 0 30px #0ff, 0 0 60px rgba(0, 255, 200, 0.4), inset 0 0 30px rgba(0, 255, 200, 0.2);
+            color: #0ff;
+            text-shadow: 0 0 12px #0ff;
+            transform: scale(1.02);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            border-color: #0f0;
+            background: rgba(0, 60, 20, 0.8);
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0, 0 0 20px #0f0;
+        }
+
+        /* ----- STATUS PANEL (hidden by default) ----- */
+        .status-panel {
+            margin-top: 30px;
+            padding: 20px 18px;
+            background: rgba(0, 30, 15, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid #0ff;
+            border-radius: 20px;
+            box-shadow: 0 0 40px #0ff, 0 0 80px rgba(0, 255, 200, 0.3), inset 0 0 40px rgba(0, 255, 200, 0.08);
+            display: none;
+            animation: panelAppear 0.5s ease-out;
+        }
+
+        @keyframes panelAppear {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-panel.active {
+            display: block;
+        }
+
+        .status-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 255, 200, 0.2);
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+        }
+
+        .status-line:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: #0ff;
+            text-shadow: 0 0 6px #0ff;
+            font-weight: 700;
+            min-width: 120px;
+            text-transform: uppercase;
+        }
+
+        .status-value {
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            word-break: break-word;
+            font-weight: 600;
+        }
+
+        .status-highlight {
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+            font-weight: 700;
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; text-shadow: 0 0 16px #0ff, 0 0 32px #0ff; }
+            100% { opacity: 0.8; }
+        }
+
+        /* ----- PROGRESS BAR ----- */
+        .progress-container {
+            margin: 18px 0 8px;
+            width: 100%;
+            height: 12px;
+            background: rgba(0, 40, 20, 0.7);
+            border: 1px solid #0fa;
+            border-radius: 12px;
+            box-shadow: inset 0 0 12px rgba(0, 255, 200, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0f0, #0ff, #0f0);
+            background-size: 200% 100%;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #0ff, 0 0 40px #0f0;
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: shimmer 1.8s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #0fa;
+            text-shadow: 0 0 6px #0fa;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* scanning line effect */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0ff, #0f0, #0ff, transparent);
+            box-shadow: 0 0 20px #0ff, 0 0 40px #0f0;
+            animation: scanMove 2.2s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes scanMove {
+            0% { top: 0%; opacity: 1; }
+            100% { top: 100%; opacity: 0.3; }
+        }
+
+        /* footer disclaimer */
+        .disclaimer {
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 22px;
+            color: rgba(0, 255, 200, 0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(0, 255, 200, 0.15);
+            padding-top: 14px;
+        }
+
+        /* ----- MOBILE RESPONSIVE ----- */
+        @media (max-width: 600px) {
+            .cyber-terminal {
+                padding: 18px 14px;
+                border-radius: 20px;
+            }
+
+            .glitch-title {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 0.55rem;
+                letter-spacing: 3px;
+            }
+
+            .btn {
+                flex: 1 1 100%;
+                padding: 12px;
+                font-size: 0.8rem;
+            }
+
+            .status-label {
+                min-width: 90px;
+                font-size: 0.75rem;
+            }
+
+            .status-value {
+                font-size: 0.8rem;
+            }
+
+            .prefix {
+                font-size: 0.95rem;
+                padding-left: 12px;
+            }
+
+            .cyber-input {
+                font-size: 0.9rem;
+                padding: 10px 12px 10px 4px;
+            }
+
+            .cyber-select {
+                font-size: 0.85rem;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .glitch-title {
+                font-size: 0.85rem;
+            }
+
+            .status-line {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+        }
+
+        /* custom scroll for select */
+        select::-ms-expand {
+            display: none;
+        }
+
+        /* blinking cursor effect for input focus */
+        .cyber-input:focus {
+            caret-color: #0ff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+    <div class="cyber-bg">
+        <div class="grid"></div>
+        <!-- Particles will be injected by JS -->
+        <div id="particleContainer"></div>
+    </div>
+
+    <!-- MAIN TERMINAL -->
+    <div class="cyber-terminal">
+        <div class="glitch-title">WHATSAPP REPORT TOOL <span>TM</span></div>
+        <div class="subtitle">⚡ GOD OF SERVER ⚡</div>
+
+        <!-- FORM -->
+        <div class="field-group">
+            <label class="field-label">TARGET WHATSAPP NUMBER</label>
+            <div class="input-wrapper">
+                <span class="prefix">+94</span>
+                <input type="tel" id="targetNumber" class="cyber-input" placeholder="Enter Number" maxlength="15" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label class="field-label">REPORT COUNT</label>
+            <div class="input-wrapper">
+                <input type="number" id="reportCount" class="cyber-input" value="500" min="1" max="9999" step="1">
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label class="field-label">SELECT REPORT TYPE</label>
+            <select id="reportType" class="cyber-select">
+                <option value="Spam">Spam</option>
+                <option value="Scam">Scam</option>
+                <option value="Fraud">Fraud</option>
+                <option value="Harassment">Harassment</option>
+                <option value="Threatening Messages">Threatening Messages</option>
+                <option value="Fake Account">Fake Account</option>
+                <option value="Impersonation">Impersonation</option>
+                <option value="Fake Business">Fake Business</option>
+                <option value="Phishing">Phishing</option>
+                <option value="Malicious Links">Malicious Links</option>
+                <option value="Unauthorized Advertising">Unauthorized Advertising</option>
+                <option value="Repeated Messages">Repeated Messages</option>
+                <option value="Fake Information">Fake Information</option>
+                <option value="Account Abuse">Account Abuse</option>
+                <option value="Privacy Violation">Privacy Violation</option>
+                <option value="Copyright Violation">Copyright Violation</option>
+                <option value="Identity Misuse">Identity Misuse</option>
+                <option value="Child Safety Concern">Child Safety Concern</option>
+                <option value="Hate / Abusive Content">Hate / Abusive Content</option>
+                <option value="Illegal Activity">Illegal Activity</option>
+                <option value="Extortion">Extortion</option>
+                <option value="Stalking">Stalking</option>
+                <option value="Suspicious Activity">Suspicious Activity</option>
+                <option value="Other Abuse">Other Abuse</option>
+                <option value="General Report">General Report</option>
+            </select>
+        </div>
+
+        <div class="button-row">
+            <button class="btn btn-primary" id="submitBtn">[ SUBMIT REPORT ]</button>
+            <button class="btn" id="clearBtn">[ CLEAR ]</button>
+        </div>
+
+        <!-- STATUS PANEL (hidden initially) -->
+        <div class="status-panel" id="statusPanel">
+            <div class="status-line">
+                <span class="status-label">SYSTEM STATUS:</span>
+                <span class="status-value status-highlight" id="sysStatus">REPORT PREPARED</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">TARGET:</span>
+                <span class="status-value" id="statusTarget">+94 XXXXXXXX</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">TYPE:</span>
+                <span class="status-value" id="statusType">SPAM</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">STATUS:</span>
+                <span class="status-value status-highlight" id="statusFinal">READY FOR OFFICIAL SUBMISSION</span>
+            </div>
+
+            <!-- PROGRESS BAR + SCANNING EFFECT -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="scan-line"></div>
+            </div>
+            <div class="progress-label">
+                <span>SCANNING</span>
+                <span id="progressPercent">0%</span>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            ⚠️ FRONT-END DEMONSTRATION ONLY — NO AUTOMATED ACTIONS ⚠️
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- PARTICLES GENERATION -----
+            const particleContainer = document.getElementById('particleContainer');
+            const particleCount = 35;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                particle.style.background = Math.random() > 0.6 ? '#0ff' : '#0f0';
+                particle.style.boxShadow = `0 0 ${size * 3}px ${Math.random() > 0.6 ? '#0ff' : '#0f0'}`;
+                particleContainer.appendChild(particle);
+            }
+
+            // ----- DOM ELEMENTS -----
+            const targetInput = document.getElementById('targetNumber');
+            const reportCount = document.getElementById('reportCount');
+            const reportType = document.getElementById('reportType');
+            const submitBtn = document.getElementById('submitBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const statusPanel = document.getElementById('statusPanel');
+            const statusTarget = document.getElementById('statusTarget');
+            const statusType = document.getElementById('statusType');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+
+            // ----- STATE -----
+            let progressInterval = null;
+            let currentProgress = 0;
+
+            // ----- UTILS -----
+            function resetProgress() {
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+                currentProgress = 0;
+                progressBar.style.width = '0%';
+                progressPercent.textContent = '0%';
+            }
+
+            function startProgress() {
+                resetProgress();
+                // Animate progress from 0 to 100 over ~2.2 seconds
+                const duration = 2200;
+                const intervalTime = 20;
+                const steps = duration / intervalTime;
+                let step = 0;
+
+                progressInterval = setInterval(() => {
+                    step++;
+                    // ease-out curve
+                    const progress = Math.min(100, Math.round((1 - Math.pow(1 - step / steps, 3)) * 100));
+                    currentProgress = progress;
+                    progressBar.style.width = progress + '%';
+                    progressPercent.textContent = progress + '%';
+
+                    if (step >= steps) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                        progressBar.style.width = '100%';
+                        progressPercent.textContent = '100%';
+                    }
+                }, intervalTime);
+            }
+
+            // ----- VALIDATION & SUBMIT -----
+            function handleSubmit() {
+                const rawNumber = targetInput.value.trim();
+                const reportTypeValue = reportType.value;
+                const count = parseInt(reportCount.value, 10) || 500;
+
+                // Basic validation: must be digits and non-empty
+                if (!rawNumber || !/^\d+$/.test(rawNumber)) {
+                    alert('⚠️ ENTER A VALID NUMBER (DIGITS ONLY)');
+                    targetInput.focus();
+                    return;
+                }
+
+                // Format for display: +94 XXXXXXXX (mask middle digits)
+                let formattedNumber = '+94 ';
+                if (rawNumber.length <= 3) {
+                    formattedNumber += rawNumber;
+                } else {
+                    // Show first 2 and last 2, mask the rest for privacy
+                    const first = rawNumber.slice(0, 2);
+                    const last = rawNumber.slice(-2);
+                    const masked = 'X'.repeat(Math.max(0, rawNumber.length - 4));
+                    formattedNumber += first + masked + last;
+                }
+
+                // Update status panel
+                statusTarget.textContent = formattedNumber;
+                statusType.textContent = reportTypeValue.toUpperCase();
+
+                // Show panel
+                statusPanel.classList.add('active');
+
+                // Animate progress bar
+                startProgress();
+
+                // Smooth scroll to panel on mobile
+                if (window.innerWidth < 600) {
+                    statusPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+
+            // ----- CLEAR -----
+            function handleClear() {
+                targetInput.value = '';
+                reportCount.value = '500';
+                reportType.selectedIndex = 0; // Spam
+                statusPanel.classList.remove('active');
+                resetProgress();
+                targetInput.focus();
+            }
+
+            // ----- EVENT LISTENERS -----
+            submitBtn.addEventListener('click', handleSubmit);
+            clearBtn.addEventListener('click', handleClear);
+
+            // Allow Enter key on target field to submit
+            targetInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSubmit();
+                }
+            });
+
+            // Optional: reset progress if user types again after submit (nice UX)
+            targetInput.addEventListener('input', () => {
+                if (statusPanel.classList.contains('active')) {
+                    // Do not hide panel, but reset progress if user modifies target
+                    // We'll keep it but reset progress to indicate new state
+                    resetProgress();
+                    progressBar.style.width = '0%';
+                    progressPercent.textContent = '0%';
+                    // update status target as they type? We'll keep the old target in panel but
+                    // it's fine for demo
+                }
+            });
+
+            // If user changes type or count, progress resets (visual feedback)
+            reportType.addEventListener('change', () => {
+                if (statusPanel.classList.contains('active')) {
+                    resetProgress();
+                    statusType.textContent = reportType.value.toUpperCase();
+                }
+            });
+
+            reportCount.addEventListener('change', () => {
+                if (statusPanel.classList.contains('active')) {
+                    resetProgress();
+                }
+            });
+
+            // Initialize with a subtle placeholder
+            targetInput.placeholder = 'Enter Number';
+        })();
+    </script>
+</body>
+</html>
